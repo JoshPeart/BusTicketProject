@@ -20,3 +20,4 @@
 <h1>Use Case 3 - Display Tickets by Category</h1>
 </strong>
 <ul>After the user selects a ticket category, the program shows all tickets in that category, including title, description, and price.</ul>
+<ul>Display Price in Pounds (£) rather than pence</ul>
