@@ -49,17 +49,24 @@ if choice == 0:
 elif choice >= 1 and choice <= 7:
     # Map numbers to category titles
     category_map = {
-        1: "1 Academic Year Tickets",
-        2: "Single Tickets",
-        3: "24 Hour Tickets",
+        1: "Academic Year Tickets",
+        2: "Single Tickets - City Zone",
+        3: "24 Hour Tickets - City Zone",
         4: "Group Tickets",
-        5: "Season Tickets",
+        5: "Season Tickets - City Zone",
         6: "Network Tickets",
         7: "NCT Partners"
     }
 
     selected_category =  category_map[choice]
     print("\nYou selected:", selected_category)
+
+    #go through all rows and print matching tickets
+    for row in rows:
+        if row["category_title"] == selected_category:
+            print("Ticket:", row["topup_title"])
+            print("Description:", row["topup_description"])
+            print("Price (pence):", row["topup_price_in_pence"], "\n")
 
 # Error if value isnt within the field
 else:
