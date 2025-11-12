@@ -67,7 +67,9 @@ elif choice >= 1 and choice <= 7:
         if row["category_title"] == selected_category:
             print("Ticket:", row["topup_title"])
             print("Description:", row["topup_description"])
-            print("Price:", "£", int(row["topup_price_in_pence"]) / 100, "\n")
+            # Pence to Pound conversion
+            price_in_pounds = int(row["topup_price_in_pence"]) / 100
+            print(f"Price: £{price_in_pounds:.2f}\n")
 
 # Error if value isnt within the field
 else:
