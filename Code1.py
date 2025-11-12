@@ -58,16 +58,17 @@ elif choice >= 1 and choice <= 7:
         7: "NCT Partners"
     }
 
-    selected_category =  category_map[choice]
-    print("\nYou selected:", selected_category)
+    # Match the selected category to the map
+    selected_category = category_map[choice]
+    print("\nYou selected:", selected_category, "\n")
 
-    #go through all rows and print matching tickets
+    # Go through all rows and print matching tickets
     for row in rows:
         if row["category_title"] == selected_category:
             print("Ticket:", row["topup_title"])
             print("Description:", row["topup_description"])
-            print("Price (pence):", row["topup_price_in_pence"], "\n")
+            print("Price:", "£", int(row["topup_price_in_pence"]) / 100, "\n")
 
 # Error if value isnt within the field
 else:
-    print("Please choose a valid option from 1 to 7.")
+    print("\nPlease choose a valid option from 1 to 7.")
