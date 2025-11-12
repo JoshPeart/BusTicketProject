@@ -17,6 +17,6 @@
 <ul>Display the results to the user</ul>
 
 <strong>
-<h1>Use Case 2 - Display Tickets by Category</h1>
+<h1>Use Case 3 - Display Tickets by Category</h1>
 </strong>
 <ul>After the user selects a ticket category, the program shows all tickets in that category, including title, description, and price.</ul>
