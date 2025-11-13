@@ -24,21 +24,26 @@ choice = int(input("\nEnter your option number: "))
 # CSV filename
 filename = 'mobile_products.csv'
 
-# Lists for CSV data
-fields = []
-rows = []
+def readFile(filepath):
+    # Lists for CSV data
+    fields = []
+    rows = []
 
-# Open and read the CSV file
-with open(filename) as csv_file:
-    # Create DictReader object
-    csv_reader = csv.DictReader(csv_file)
+    # Open and read the CSV file
+    with open(filepath) as csv_file:
+        # Create DictReader object
+        csv_reader = csv.DictReader(csv_file)
 
-    # Get field names (column headers)
-    fields = csv_reader.fieldnames
+        # Get field names (column headers)
+        fields = csv_reader.fieldnames
 
-    # Loop through each row in the CSV file
-    for row in csv_reader:
-        rows.append(row)
+        # Loop through each row in the CSV file
+        for row in csv_reader:
+            rows.append(row)
+    return fields, rows
+
+# Run readFile function
+fields, rows = readFile(filename)
 
 # Option 0 - showing the basic file info
 if choice == 0:
@@ -74,3 +79,4 @@ elif choice >= 1 and choice <= 7:
 # Error if value isnt within the field
 else:
     print("\nPlease choose a valid option from 1 to 7.")
+    
