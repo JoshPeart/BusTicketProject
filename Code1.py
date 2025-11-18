@@ -2,7 +2,7 @@
 import csv
 
 # List of ticket options
-options = ["0 View file data","1 Academic Year Tickets",
+options = ["1 Academic Year Tickets",
            "2 Single Tickets", "3 24 Hour Tickets", "4 Group Tickets",
            "5 Season Tickets", "6 Network Tickets", "7 NCT Partners"]
 
@@ -29,7 +29,7 @@ fields = []
 rows = []
 
 # Open and read the CSV file
-with open(filename) as csv_file:
+with open(filename, mode = 'r') as csv_file:
     # Create DictReader object
     csv_reader = csv.DictReader(csv_file)
 
@@ -40,13 +40,8 @@ with open(filename) as csv_file:
     for row in csv_reader:
         rows.append(row)
 
-# Option 0 - showing the basic file info
-if choice == 0:
-    print("\nField names:", fields)
-    print("\nFirst row of data:", rows[0])
-
 # Option 1 - 7 - show tickets by category
-elif choice >= 1 and choice <= 7:
+if choice >= 1 and choice <= 7:
     # Map numbers to category titles
     category_map = {
         1: "Academic Year Tickets",
