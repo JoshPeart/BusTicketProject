@@ -24,33 +24,22 @@ choice = int(input("\nEnter your option number: "))
 # CSV filename
 filename = 'mobile_products.csv'
 
-def readFile(filepath):
-    # Lists for CSV data
-    fields = []
-    rows = []
 
-<<<<<<< HEAD
-    # Open and read the CSV file
-    with open(filepath) as csv_file:
-        # Create DictReader object
-        csv_reader = csv.DictReader(csv_file)
-=======
+# Lists for CSV data
+fields = []
+rows = []
+
 # Open and read the CSV file
 with open(filename, mode = 'r') as csv_file:
     # Create DictReader object
     csv_reader = csv.DictReader(csv_file)
->>>>>>> 65abd10e550187eda4a23b29f6503cf7ef00aa69
 
-        # Get field names (column headers)
-        fields = csv_reader.fieldnames
+    # Get field names (column headers)
+    fields = csv_reader.fieldnames
 
-        # Loop through each row in the CSV file
-        for row in csv_reader:
-            rows.append(row)
-    return fields, rows
-
-# Run readFile function
-fields, rows = readFile(filename)
+# Loop through each row in the CSV file
+    for row in csv_reader:
+        rows.append(row)
 
 # Option 1 - 7 - show tickets by category
 if choice >= 1 and choice <= 7:
