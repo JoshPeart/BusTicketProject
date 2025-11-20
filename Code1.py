@@ -29,17 +29,10 @@ def readFile(filepath):
     fields = []
     rows = []
 
-<<<<<<< HEAD
     # Open and read the CSV file
     with open(filepath) as csv_file:
         # Create DictReader object
         csv_reader = csv.DictReader(csv_file)
-=======
-# Open and read the CSV file
-with open(filename, mode = 'r') as csv_file:
-    # Create DictReader object
-    csv_reader = csv.DictReader(csv_file)
->>>>>>> 65abd10e550187eda4a23b29f6503cf7ef00aa69
 
         # Get field names (column headers)
         fields = csv_reader.fieldnames
