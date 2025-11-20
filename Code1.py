@@ -58,9 +58,30 @@ if choice >= 1 and choice <= 7:
     selected_category = category_map[choice]
     print("\nYou selected:", selected_category, "\n")
 
+    subcat_options = ['Here are the Filter options for you:', '1 Student', '2 Under 19', '3 Under 19 (Group booking)',
+                      '4 Under 22', '5 Under 22 (Group booking)', '6 Adult', '7 Adult (Group booking)']
+    
+    for subcat in subcat_options:
+        print(subcat)
+
+    subcat_decision = int(input("\nWhich subcategory would you like to choose? (1-7): "))
+    print()
+
+    subcat_map =  {
+        1: 'Student',
+        2: 'Under 19',
+        3: 'Under 19s',
+        4: 'Under 22',
+        5: 'Under 22s',
+        6: 'Adult',
+        7: 'Adults'
+    }
+
+    subcat = subcat_map[subcat_decision]
+
     # Go through all rows and print matching tickets
     for row in rows:
-        if row["category_title"] == selected_category:
+        if row["category_title"] == selected_category and row["topup_passenger_class_name"] == subcat:
             print("Ticket:", row["topup_title"])
             print("Description:", row["topup_description"])
             # Pence to Pound conversion
@@ -70,4 +91,3 @@ if choice >= 1 and choice <= 7:
 # Error if value isnt within the field
 else:
     print("\nPlease choose a valid option from 1 to 7.")
-    
