@@ -21,3 +21,8 @@
 </strong>
 <ul>After the user selects a ticket category, the program shows all tickets in that category, including title, description, and price.</ul>
 <ul>Display Price in Pounds (£) rather than pence</ul>
+
+<strong>
+<h1>Use Case 4 - Filtering Options</h1>
+</strong>
+<ul>creates a seperate dropdown menu with options for the user to fileter results, depending on wether they want to filter by price, bulkbuy tickets, or by age</ul>
