@@ -1,6 +1,25 @@
 # Importing module(s)
 import csv
 
+# CSV filename
+filename = 'mobile_products.csv'
+
+# Lists for CSV data
+fields = []
+rows = []
+
+# Open and read the CSV file
+with open(filename, mode = 'r') as csv_file:
+    # Create DictReader object
+    csv_reader = csv.DictReader(csv_file)
+
+    # Get field names (column headers)
+    fields = csv_reader.fieldnames
+
+    # Loop through each row in the CSV file
+    for row in csv_reader:
+        rows.append(row)
+    
 # List of ticket options
 options = ["1 Academic Year Tickets",
            "2 Single Tickets", "3 24 Hour Tickets", "4 Group Tickets",
@@ -29,27 +48,8 @@ while True:
     except ValueError:
         print("\nInvalid input. Please enter a number from 1 - 7")
 
-# CSV filename
-filename = 'mobile_products.csv'
-
-# Lists for CSV data
-fields = []
-rows = []
-
-# Open and read the CSV file
-with open(filename, mode = 'r') as csv_file:
-    # Create DictReader object
-    csv_reader = csv.DictReader(csv_file)
-
-    # Get field names (column headers)
-    fields = csv_reader.fieldnames
-
-# Loop through each row in the CSV file
-    for row in csv_reader:
-        rows.append(row)
-
 # Option 1 - 7 - show tickets by category
-if choice >= 1 and choice <= 7:
+if 1 <= choice <= 7:
     # Map numbers to category titles
     category_map = {
         1: "Academic Year Tickets",
@@ -65,33 +65,56 @@ if choice >= 1 and choice <= 7:
     selected_category = category_map[choice]
     print("\nYou selected:", selected_category, "\n")
 
-    subcat_options = ['Here are the Filter options for you:', '1 Student', '2 Under 19', '3 Under 19 (Group booking)',
-                      '4 Under 22', '5 Under 22 (Group booking)', '6 Adult', '7 Adult (Group booking)']
-    
-    for subcat in subcat_options:
+##    subcat_options = ['Here are the Filter options for you:', '1 Student', '2 Under 19', '3 Under 19 (Group booking)',
+##                      '4 Under 22', '5 Under 22 (Group booking)', '6 Adult', '7 Adult (Group booking)']
+##    
+##    for subcat in subcat_options:
+##        print(subcat)
+##
+##    while True:
+##        try:
+##            subcat_decision = int(input("\nWhich subcategory would you like to choose? (1-7): "))
+##            if 1 <= subcat_decision <= 7:
+##                break
+##            else:
+##                print("\nInvalid input. Please enter a number from 1 - 7.")
+##        except ValueError:
+##            print("\nInvalid input. Please enter a number from 1 - 7")
+##
+##    subcat_map =  {
+##        1: 'Student',
+##        2: 'Under 19',
+##        3: 'Under 19s',
+##        4: 'Under 22',
+##        5: 'Under 22s',
+##        6: 'Adult',
+##        7: 'Adults'
+##    }
+##
+##    subcat = subcat_map[subcat_decision]
+
+    available_subcats = []
+
+    for row in rows:
+        if row["category_title"] == selected_category:
+            available_subcats.append(row["topup_passenger_class_name"])
+
+    print("Available subcategories for your selection:")
+
+    for subcat in available_subcats:
         print(subcat)
 
     while True:
         try:
-            subcat_decision = int(input("\nWhich subcategory would you like to choose? (1-7): "))
-            if 1 <= subcat_decision <= 7:
+            subcat_choice = int(input(f"\nWhich subcategory would you like to choose? (1-{len(available_subcats)}) "))
+            if 1 <= subcat_choice <= len(available_subcats):
+                subcat = available_subcats[subcat_choice - 1]
                 break
             else:
-                print("\nInvalid input. Please enter a number from 1 - 7.")
+                print(f"\nInvalid input. Please enter a number from 1 to {len(available_subcats)}.")
         except ValueError:
-            print("\nInvalid input. Please enter a number from 1 - 7")
+            print(f"\nInvalid input. Please enter a number from 1 to {len(available_subcats)}.")
 
-    subcat_map =  {
-        1: 'Student',
-        2: 'Under 19',
-        3: 'Under 19s',
-        4: 'Under 22',
-        5: 'Under 22s',
-        6: 'Adult',
-        7: 'Adults'
-    }
-
-    subcat = subcat_map[subcat_decision]
 
     print("\nMatching Tickets:\n")
 
