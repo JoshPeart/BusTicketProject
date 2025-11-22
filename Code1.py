@@ -18,12 +18,19 @@ print(instructions)
 for option in options:
     print(option)
 
-# User Input
-choice = int(input("\nEnter your option number: "))
+while True:
+    try:
+        # User Input
+        choice = int(input("\nEnter your option number: "))
+        if 1 <= choice <= 7:
+            break
+        else:
+            print("\nInvalid input. Please enter a number from 1 - 7.")
+    except ValueError:
+        print("\nInvalid input. Please enter a number from 1 - 7")
 
 # CSV filename
 filename = 'mobile_products.csv'
-
 
 # Lists for CSV data
 fields = []
@@ -64,8 +71,15 @@ if choice >= 1 and choice <= 7:
     for subcat in subcat_options:
         print(subcat)
 
-    subcat_decision = int(input("\nWhich subcategory would you like to choose? (1-7): "))
-    print()
+    while True:
+        try:
+            subcat_decision = int(input("\nWhich subcategory would you like to choose? (1-7): "))
+            if 1 <= subcat_decision <= 7:
+                break
+            else:
+                print("\nInvalid input. Please enter a number from 1 - 7.")
+        except ValueError:
+            print("\nInvalid input. Please enter a number from 1 - 7")
 
     subcat_map =  {
         1: 'Student',
@@ -79,14 +93,24 @@ if choice >= 1 and choice <= 7:
 
     subcat = subcat_map[subcat_decision]
 
+    print("\nMatching Tickets:\n")
+
+    found = False
+
     # Go through all rows and print matching tickets
     for row in rows:
         if row["category_title"] == selected_category and row["topup_passenger_class_name"] == subcat:
+
+            found = True
+            
             print("Ticket:", row["topup_title"])
             print("Description:", row["topup_description"])
             # Pence to Pound conversion
             price_in_pounds = int(row["topup_price_in_pence"]) / 100
             print(f"Price: £{price_in_pounds:.2f}\n")
+
+    if not found:
+        print("No tickets found for that category + subcategory")
 
 # Error if value isnt within the field
 else:
