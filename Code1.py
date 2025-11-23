@@ -4,22 +4,29 @@ import csv
 # CSV filename
 filename = 'mobile_products.csv'
 
-# Lists for CSV data
-fields = []
-rows = []
+def readFile(filename):
+    # Lists for CSV data
+    fields = []
+    rows = []
 
-# Open and read the CSV file
-with open(filename, mode = 'r') as csv_file:
-    # Create DictReader object
-    csv_reader = csv.DictReader(csv_file)
+    # Open and read the CSV file
+    with open(filename, mode = 'r') as csv_file:
+        # Create DictReader object
+        csv_reader = csv.DictReader(csv_file)
 
-    # Get field names (column headers)
-    fields = csv_reader.fieldnames
+        # Get field names (column headers)
+        fields = csv_reader.fieldnames
 
-    # Loop through each row in the CSV file
-    for row in csv_reader:
-        rows.append(row)
-    
+        # Loop through each row in the CSV file
+        for row in csv_reader:
+            rows.append(row)
+
+    return fields, rows
+
+# Get values from readFile function
+fields, rows = readFile(filename)
+
+
 # List of ticket options
 options = ["1 Academic Year Tickets",
            "2 Single Tickets",
