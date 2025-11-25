@@ -1,8 +1,21 @@
+class Product:
+    def __init__(self, code, title, description, price_pence, category):
+        self.code = code
+        self.title = title
+        self.description = description
+        self.price_pence = int(price_pence)
+        self.category = category
+
+    def price_pounds(self):
+        return self.price_pence / 100
+
+
 # Importing module(s)
 import csv
 
 # CSV filename
 filename = 'mobile_products.csv'
+
 
 def readFile(filename):
     # Lists for CSV data
@@ -25,7 +38,6 @@ def readFile(filename):
 
 # Get values from readFile function
 fields, rows = readFile(filename)
-
 
 # List of ticket options
 options = ["1 Academic Year Tickets",
