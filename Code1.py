@@ -1,13 +1,26 @@
-class Product:
-    def __init__(self, code, title, description, price_pence, category):
+class Category:
+    def __init__(self, code, title, description, price_pence):
         self.code = code
         self.title = title
         self.description = description
         self.price_pence = int(price_pence)
-        self.category = category
 
     def price_pounds(self):
         return self.price_pence / 100
+
+    def getCode(self):
+        return self.code
+
+    def getTitle(self):
+        return self.title
+
+    def getDescription(self):
+        return self.description
+
+class SubCategory:
+    def __init__(self, code, title):
+        self.code = code
+        self.title = title
 
 
 # Importing module(s)
@@ -17,37 +30,54 @@ import csv
 filename = 'mobile_products.csv'
 
 
-def readFile(filename):
-    # Lists for CSV data
-    fields = []
-    rows = []
+##def readFile(filename):
+##    # Lists for CSV data
+##    fields = []
+##    rows = []
+##
+##    # Open and read the CSV file
+##    with open(filename, mode = 'r') as csv_file:
+##        # Create DictReader object
+##        csv_reader = csv.DictReader(csv_file)
+##
+##        # Get field names (column headers)
+##        fields = csv_reader.fieldnames
+##
+##        # Loop through each row in the CSV file
+##        for row in csv_reader:
+##            rows.append(row)
+##
+##    return fields, rows
+##
+### Get values from readFile function
+##fields, rows = readFile(filename)
 
-    # Open and read the CSV file
-    with open(filename, mode = 'r') as csv_file:
-        # Create DictReader object
-        csv_reader = csv.DictReader(csv_file)
 
-        # Get field names (column headers)
-        fields = csv_reader.fieldnames
+categoryList = []
+categoryObjectList = []
+import csv
+code = 1
 
-        # Loop through each row in the CSV file
-        for row in csv_reader:
-            rows.append(row)
+with open('mobile_products.csv', mode='r') as file:
+    csvFile = csv.DictReader(file)
+    for lines in csvFile:
+        if lines["category_title"] not in categoryList:
+            categoryList.append(lines["category_title"])
+            thisCat = Category(code, lines["category_title"], lines["category_description"], lines["topup_price_in_pence"])
+            categoryObjectList.append(thisCat)
+            code += 1
 
-    return fields, rows
 
-# Get values from readFile function
-fields, rows = readFile(filename)
 
-# List of ticket options
-options = ["1 Academic Year Tickets",
-           "2 Single Tickets",
-           "3 24 Hour Tickets",
-           "4 Group Tickets",
-           "5 Season Tickets",
-           "6 Network Tickets",
-           "7 NCT Partners"
-           ]
+### List of ticket options
+##options = ["1 Academic Year Tickets",
+##           "2 Single Tickets",
+##           "3 24 Hour Tickets",
+##           "4 Group Tickets",
+##           "5 Season Tickets",
+##           "6 Network Tickets",
+##           "7 NCT Partners"
+##           ]
 
 instructions = """
 Welcome to the NCTX Bus Ticket Application
@@ -58,8 +88,8 @@ Enter the Option Number
 print(instructions)
 
 # Printing the options
-for option in options:
-    print(option)
+for data in categoryObjectList:
+    print(data.getCode(), data.getDescription(), "\n")
 
 while True:
     try:
@@ -92,7 +122,7 @@ if 1 <= choice <= 7:
     available_subcats = []
 
     # Get subcategory values and add them to the list
-    for row in rows:
+    for row in categoryList:
         if row["category_title"] == selected_category:
             available_subcats.append(row["topup_passenger_class_name"])
 
