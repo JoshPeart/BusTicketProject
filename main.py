@@ -1,15 +1,11 @@
 import csv
 
 class Category:
-    def __init__(self, code, title, description, price_pence):
+    def __init__(self, code, title, description):
         self.code = code
         self.title = title
         self.description = description
-        self.price_pence = int(price_pence)
-
-    def price_pounds(self):
-        return self.price_pence / 100
-
+        
     def getCode(self):
         return self.code
 
@@ -20,17 +16,20 @@ class Category:
         return self.description
 
 class Product:
-    def __init__(self, code, title):
+    def __init__(self, code, title, price_pence):
         self.code = code
         self.title = title
+        self.price_pence = int(price_pence)
 
+    def price_pounds(self):
+        return self.price_pence / 100
 
 
 def menu():
     instructions = """
-    Welcome to the NCTX Bus Ticket Application
-    Pick one of the following options
-    Enter the Option Number
+Welcome to the NCTX Bus Ticket Application
+Pick one of the following options
+Enter the Option Number
     """
 
     print(instructions)
@@ -45,7 +44,7 @@ def createCategories():
         for lines in csvFile:
             if lines["category_title"] not in categoryList:
                 categoryList.append(lines["category_title"])
-                thisCat = Category(code, lines["category_title"], lines["category_description"], lines["topup_price_in_pence"])
+                thisCat = Category(code, lines["category_title"], lines["category_description"])
                 categoryObjectList.append(thisCat)
                 code += 1
     return categoryObjectList
@@ -60,7 +59,7 @@ def createProduct(chosenCat):
         for lines in csvFile:
             if lines["category_title"] == chosenCat.title:
              
-                thisProd = Product(code, lines["topup_title"])
+                thisProd = Product(code, lines["topup_title"], lines["topup_price_in_pence"])
                 productObjectList.append(thisProd)
                 code += 1
     return productObjectList
@@ -68,7 +67,7 @@ def createProduct(chosenCat):
 def getChoice(aList):
     while True:
         try:
-            choice = int(input("\nEnter your option number: "))
+            choice = int(input(f"\nEnter your option number (1 - {len(aList)}): "))
             if 1 <= choice <= len(aList):
                 return choice
                 break
@@ -92,7 +91,12 @@ chosenCat = categories[choice]
 
 products = createProduct(chosenCat)
 
+print("\nViewing:", chosenCat.title, "\n")
 for prod in products:
-    print(prod.title, "\n")
+    print(prod.code, prod.title, f"- £{prod.price_pounds()}", "\n")
+
+print("")
 
 choice = getChoice(products)
+choice -=1
+chosenProd = products[choice]
