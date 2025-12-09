@@ -52,7 +52,7 @@ filename = 'mobile_products.csv'
 ### Get values from readFile function
 ##fields, rows = readFile(filename)
 
-
+rows = []
 categoryList = []
 categoryObjectList = []
 import csv
@@ -66,6 +66,8 @@ with open('mobile_products.csv', mode='r') as file:
             thisCat = Category(code, lines["category_title"], lines["category_description"], lines["topup_price_in_pence"])
             categoryObjectList.append(thisCat)
             code += 1
+    for row in csvFile:
+        rows.append(row)
 
 
 
@@ -122,7 +124,7 @@ if 1 <= choice <= 7:
     available_subcats = []
 
     # Get subcategory values and add them to the list
-    for row in categoryList:
+    for row in rows:
         if row["category_title"] == selected_category:
             available_subcats.append(row["topup_passenger_class_name"])
 
