@@ -75,28 +75,67 @@ def getChoice(aList):
                 print(f"\nInvalid input. Please enter a number from 1 - {len(aList)}.")
         except ValueError:
             print(f"\nInvalid input. Please enter a number from 1 - {len(aList)}")
+
+def ticketPurchase(products):
+    buy = int(input("Would you like to purchase a ticket? Enter the code: "))
+
+    while buy <0 or buy > len(products):
+        print("Invalid selection")
+        buy = int(input("Would you like to purchase a ticket? Enter the code: "))
+        
+    if buy != 'y':
+        print("\nReturning to the main menu..")
+        return
+
+    choice = getChoice(products)
+    chosenProd = products[choice - 1]
+
+    print(f"\nYou have chosen: {chosenProd.title}")
+
+    confirm = input("\nIs this ticket correct? (y/n) ")
+
+    if confirm == 'y':
+        print("\n========TRANSACTION SUCCESSFUL========")
+        print(f"Ticket: {chosenProd.title}")
+        print(f"Price Paid: £{chosenProd.price_pounds():.2f}")
+        print("Thank you for your purchase!")
+
+        with open("purchases.csv", "a", newline ="") as file:
+            writer = csv.writer(file)
+            writer.writerow([chosenProd.code,
+                             chosenProd.title,
+                             f"{chosenProd.price_pounds():.2f}"])
     
+    else:
+        print("Purchase Cancelled \n")
+          
 
 #main
+while True:
+    menu()
+    categories = createCategories()
 
-menu()
-categories = createCategories()
+    for data in categories:
+        print(data.getCode(), data.getDescription(), "\n")
 
-for data in categories:
-    print(data.getCode(), data.getDescription(), "\n")
+    choice = getChoice(categories)
+    chosenCat = categories[choice - 1]
 
-choice = getChoice(categories)
-choice -=1
-chosenCat = categories[choice]
+    products = createProduct(chosenCat)
 
-products = createProduct(chosenCat)
+    print("\nViewing:", chosenCat.title, "\n")
+    for prod in products:
+        print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
 
-print("\nViewing:", chosenCat.title, "\n")
-for prod in products:
-    print(prod.code, prod.title, f"- £{prod.price_pounds()}", "\n")
+    #Ticket Purchasing section
+    ticketPurchase(products)
+    
+    again = input("Would you like to return to the main menu? (y/n) ")
 
-print("")
+    if again == 'n':
+        print("\nGoodbye!")
+        break
+    else:
+        print("\nReturning to the main menu..")
 
-choice = getChoice(products)
-choice -=1
-chosenProd = products[choice]
+
