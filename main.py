@@ -77,28 +77,27 @@ def getChoice(aList):
             print(f"\nInvalid input. Please enter a number from 1 - {len(aList)}")
 
 def ticketPurchase(products):
-    buy = int(input("Would you like to purchase a ticket? Enter the code: "))
+    while True:
+        try:
+            buy = int(input("\nWould you like to purchase a ticket? Enter the code: "))
+            if 1 <= buy <= len(products):
+                break
+            else:
+                print(f"\nInvalid input. Please enter a number from 1 - {len(products)}.")
+        except ValueError:
+            print(f"\nInvalid input. Please enter a number from 1 - {len(products)}")
 
-    while buy <0 or buy > len(products):
-        print("Invalid selection")
-        buy = int(input("Would you like to purchase a ticket? Enter the code: "))
-        
-    if buy != 'y':
-        print("\nReturning to the main menu..")
-        return
+    chosenProd = products[buy - 1]
 
-    choice = getChoice(products)
-    chosenProd = products[choice - 1]
+    print(f"\nYou have chosen: {chosenProd.title} for £{chosenProd.price_pounds():.2f}")
 
-    print(f"\nYou have chosen: {chosenProd.title}")
-
-    confirm = input("\nIs this ticket correct? (y/n) ")
+    confirm = input("\nConfirm your purchase: (y/n) ")
 
     if confirm == 'y':
         print("\n========TRANSACTION SUCCESSFUL========")
         print(f"Ticket: {chosenProd.title}")
         print(f"Price Paid: £{chosenProd.price_pounds():.2f}")
-        print("Thank you for your purchase!")
+        print("Thank you for your purchase!\n")
 
         with open("purchases.csv", "a", newline ="") as file:
             writer = csv.writer(file)
@@ -129,13 +128,16 @@ while True:
 
     #Ticket Purchasing section
     ticketPurchase(products)
-    
-    again = input("Would you like to return to the main menu? (y/n) ")
 
-    if again == 'n':
-        print("\nGoodbye!")
-        break
-    else:
-        print("\nReturning to the main menu..")
+    try:
+        again = input("Would you like to return to the main menu? (y/n) ")
+
+        if again == 'n':
+            print("\nGoodbye!")
+            break
+        else:
+            print("\nReturning to the main menu..")
+    except ValueError:
+            print(f"\nInvalid input.")
 
 
