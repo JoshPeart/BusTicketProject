@@ -42,6 +42,7 @@ def login():
     if choice == "2":
         print("\nContinuing as guest...")
         return None  # Guest
+    elif choice == "1":
         username = input("Enter username: ")
         password = input("Enter password: ")
 
