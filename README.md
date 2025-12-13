@@ -4,14 +4,18 @@
 
 <h1>Use Case 1 - Application Start and User Authentication</h1>
 <p>The user will be welcomed to the app, prompted to log in, or continue as a guest.</p>
-<ul>Displays a welcome screen with login options</ul>
-<ul>User can:
-  <ul>Log in with a username and password</ul>
-  <ul>Continue as a guest</ul>
-</ul>
-<ul>These logged in users will be assigned with a role (<i>Admin</i> or <i>Customer</i>)</ul>
-<ul>Guest users can browse tickets but not complete purchases, they will be prompted to log in</ul>
 
+<ul>
+  <li>Displays a welcome screen with login options</li>
+  <li>User can:
+    <ul>
+      <li>Log in with a username and password</li>
+      <li>Continue as a guest</li>
+    </ul>
+  <li>
+  <li>These logged in users will be assigned with a role (<i>Admin</i> or <i>Customer</i>)</li>
+  <li>Guest users can browse tickets but not complete purchases, they will be prompted to log in</li>
+</ul>
 
 <h1>Use Case 2 - Main Menu Display, General Introduction</h1>
 <ul>display the main menu instructions
