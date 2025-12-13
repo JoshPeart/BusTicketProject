@@ -24,13 +24,41 @@ class Product:
     def price_pounds(self):
         return self.price_pence / 100
 
+# Accounts dictionary
+accounts = [
+    {"username": "admin", "password": "admin123", "role": "admin"},
+    {"username": "user", "password": "user123", "role": "customer"},
+    ]
 
+def login():
+    print("""
+========Mobile Tickets========
+1. Log in
+2. Continue as guest
+""")
+
+    choice = input("Choose an option: ")
+
+    if choice == "2":
+        print("\nContinuing as guest...")
+        return None  # Guest
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+
+    for account in accounts:
+        if account["username"] == username and account["password"] == password:
+            print(f"\nLogin successful! Logged in as: {username}\n")
+            return account["role"]
+    print("\nInvalid username or password. Try again.\n")
+
+    
 def menu():
     instructions = """
+========MAIN MENU========
 Welcome to the NCTX Bus Ticket Application
 Pick one of the following options
 Enter the Option Number
-    """
+"""
 
     print(instructions)
 
@@ -76,7 +104,7 @@ def getChoice(aList):
         except ValueError:
             print(f"\nInvalid input. Please enter a number from 1 - {len(aList)}")
 
-def ticketPurchase(products):
+def ticketPurchase(products, role):
     while True:
         try:
             buy = int(input("\nWould you like to purchase a ticket? Enter the code: "))
@@ -91,6 +119,14 @@ def ticketPurchase(products):
 
     print(f"\nYou have chosen: {chosenProd.title} for £{chosenProd.price_pounds():.2f}")
 
+    if role is None:
+        print("\nYou must log in to complete this purchase.")
+        role = login()
+
+        if role is None:
+            print("\nPurchase cancelled. Guest users cannot buy tickets.\n")
+            return role
+    
     confirm = input("\nConfirm your purchase: (y/n) ")
 
     if confirm == 'y':
@@ -110,6 +146,8 @@ def ticketPurchase(products):
           
 
 #main
+role = login()
+
 while True:
     menu()
     categories = createCategories()
@@ -127,7 +165,8 @@ while True:
         print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
 
     #Ticket Purchasing section
-    ticketPurchase(products)
+        
+    role = ticketPurchase(products, role)
 
     try:
         again = input("Would you like to return to the main menu? (y/n) ")
