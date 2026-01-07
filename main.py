@@ -27,7 +27,8 @@ class Product:
 # Accounts dictionary
 accounts = [
     {"username": "admin", "password": "admin123", "role": "admin"},
-    {"username": "user", "password": "user123", "role": "customer"},
+    {"username": "user1", "password": "user1", "role": "customer"},
+    {"username": "user2", "password": "user2", "role": "customer"},
     ]
 
 def login():
@@ -37,21 +38,49 @@ def login():
 2. Continue as guest
 """)
 
-    choice = input("Choose an option: ")
 
-    if choice == "2":
-        print("\nContinuing as guest...")
-        return None  # Guest
-    elif choice == "1":
-        username = input("Enter username: ")
-        password = input("Enter password: ")
+    while True:
+        try:
+            choice = int(input("Choose an option: "))
 
-    for account in accounts:
-        if account["username"] == username and account["password"] == password:
-            print(f"\nLogin successful! Logged in as: {username}\n")
-            return account["role"]
-    print("\nInvalid username or password. Try again.\n")
+            if choice == 2:
+                print("\nContinuing as guest...")
+                return None, None
 
+            elif choice == 1:
+                username = input("\nEnter username: ")
+                password = input("\nEnter password: ")
+
+                for account in accounts:
+                    if account["username"] == username and account["password"] == password:
+                        print(f"\nLogin successful! Logged in as: {username}\n")
+                        return account["role"], username
+
+                print("\nInvalid username or password. Try again.\n")
+
+            else:
+                print("\nPlease enter 1 or 2.")
+
+        except ValueError:
+            print("\nInvalid input. Please enter a number.")
+
+def userMenu():
+    print("""
+======== USER MENU ========
+1. View purchased tickets
+2. Purchase a ticket
+3. Log out
+""")
+
+def adminMenu():
+    print("""
+======== ADMIN MENU ========
+1. Purchase a ticket (test)
+2. Add product
+3. View purchased tickets
+4. Clear purchase history
+5. Log out
+""")
     
 def menu():
     instructions = """
@@ -105,7 +134,7 @@ def getChoice(aList):
         except ValueError:
             print(f"\nInvalid input. Please enter a number from 1 - {len(aList)}")
 
-def ticketPurchase(products, role):
+def ticketPurchase(products, role, username):
     while True:
         try:
             buy = int(input("\nWould you like to purchase a ticket? Enter the code: "))
@@ -126,7 +155,7 @@ def ticketPurchase(products, role):
 
         if role is None:
             print("\nPurchase cancelled. Guest users cannot buy tickets.\n")
-            return role
+            return role, username
     
     confirm = input("\nConfirm your purchase: (y/n) ")
 
@@ -138,18 +167,110 @@ def ticketPurchase(products, role):
 
         with open("purchases.csv", "a", newline ="") as file:
             writer = csv.writer(file)
-            writer.writerow([chosenProd.code,
+            writer.writerow([username,
+                             chosenProd.code,
                              chosenProd.title,
                              f"{chosenProd.price_pounds():.2f}"])
     
     else:
-        print("Purchase Cancelled \n")
+        print("\nPurchase Cancelled \n")
           
+def viewTickets(username, role):
+    try:
+        with open("purchases.csv", "r") as file:
+            reader = csv.reader(file)
+            print("\n===== PURCHASED TICKETS =====")
+
+            found = False
+            
+            for row in reader:
+
+                if role == "admin":
+                    print(f"User: {row[0]} | {row[2]} - £{row[3]}")
+                    found = True
+
+                elif role == "customer":
+                    print(f"{row[2]} - £{row[3]}")
+                    found = True
+
+            if not found:
+                print("\nNo tickets found.")
+                
+            print()
+            
+    except FileNotFoundError:
+        print("\nNo tickets purchased yet.\n")
+
+def clearPurchases():
+
+    with open("purchases.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            
+            writer.writerow(["username", "product_code", "title", "price"])
 
 #main
-role = login()
+role, username = login()
 
 while True:
+
+    if role == "customer":
+        userMenu()
+        try:
+            user_choice = int(input("Choose an option: "))
+
+            if user_choice == 1:
+                viewTickets(username, role)
+                continue
+
+            elif user_choice == 2:
+                pass
+
+            elif user_choice == 3:
+                print("\nLogged out successfully.\n")
+                role = None
+                continue
+
+            else:
+                print("\nInvalid option.")
+                continue
+
+        except ValueError:
+            print("\nInvalid input.")
+            continue
+
+    if role == "admin":
+        adminMenu()
+        try:
+            user_choice = int(input("Choose an option: "))
+
+            if user_choice == 1:
+                viewTickets(username, role)
+                continue
+
+            elif user_choice == 2:
+                continue
+
+            elif user_choice == 3:
+                continue
+
+            elif user_choice == 4:
+                clearPurchases()
+                continue
+
+            elif user_choice == 5:
+                print("\nLogged out successfully.\n")
+                role = None
+                continue
+
+            else:
+                print("\nInvalid option.")
+                continue
+
+        except ValueError:
+            print("\nInvalid input.")
+            continue
+
+
     menu()
     categories = createCategories()
 
@@ -167,7 +288,7 @@ while True:
 
     #Ticket Purchasing section
         
-    role = ticketPurchase(products, role)
+    role = ticketPurchase(products, role, username)
 
     try:
         again = input("Would you like to return to the main menu? (y/n) ")
