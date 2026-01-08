@@ -151,7 +151,7 @@ def ticketPurchase(products, role, username):
 
     if role is None:
         print("\nYou must log in to complete this purchase.")
-        role = login()
+        role, username = login()
 
         if role is None:
             print("\nPurchase cancelled. Guest users cannot buy tickets.\n")
@@ -202,11 +202,9 @@ def viewTickets(username, role):
         print("\nNo tickets purchased yet.\n")
 
 def clearPurchases():
-
+    
     with open("purchases.csv", "w", newline="") as file:
             writer = csv.writer(file)
-            
-            writer.writerow(["username", "product_code", "title", "price"])
 
 #main
 role, username = login()
@@ -218,14 +216,14 @@ while True:
         try:
             user_choice = int(input("Choose an option: "))
 
-            if user_choice == 1:
+            if user_choice == 1: # view ticket purchases
                 viewTickets(username, role)
                 continue
 
-            elif user_choice == 2:
+            elif user_choice == 2: # purchase ticket
                 pass
 
-            elif user_choice == 3:
+            elif user_choice == 3: # log out
                 print("\nLogged out successfully.\n")
                 role = None
                 continue
@@ -243,21 +241,21 @@ while True:
         try:
             user_choice = int(input("Choose an option: "))
 
-            if user_choice == 1:
+            if user_choice == 1: # purchase ticket
+                continue
+
+            elif user_choice == 2: # add product
+                continue
+
+            elif user_choice == 3: # view ticket purchases
                 viewTickets(username, role)
                 continue
 
-            elif user_choice == 2:
-                continue
-
-            elif user_choice == 3:
-                continue
-
-            elif user_choice == 4:
+            elif user_choice == 4: # clear purchases
                 clearPurchases()
                 continue
 
-            elif user_choice == 5:
+            elif user_choice == 5: # log out
                 print("\nLogged out successfully.\n")
                 role = None
                 continue
