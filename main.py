@@ -207,96 +207,90 @@ def clearPurchases():
             writer = csv.writer(file)
 
 #main
-role, username = login()
 
 while True:
+    role, username = login()
 
-    if role == "customer":
-        userMenu()
+    while True:
+        if role == "customer":
+            userMenu()
+            try:
+                user_choice = int(input("Choose an option: "))
+
+                if user_choice == 1: # view ticket purchases
+                    viewTickets(username, role)
+
+                elif user_choice == 2: # purchase ticket
+                    pass
+
+                elif user_choice == 3: # log out
+                    print("\nLogged out successfully.\n")
+                    role = None
+                    break
+
+                else:
+                    print("\nInvalid option.")
+
+            except ValueError:
+                print("\nInvalid input.")
+
+        elif role == "admin":
+            adminMenu()
+            try:
+                user_choice = int(input("Choose an option: "))
+
+                if user_choice == 1: # purchase ticket
+                    pass
+
+                elif user_choice == 2: # add product
+                    pass
+
+                elif user_choice == 3: # view ticket purchases
+                    viewTickets(username, role)
+
+                elif user_choice == 4: # clear purchases
+                    clearPurchases()
+
+                elif user_choice == 5: # log out
+                    print("\nLogged out successfully.\n")
+                    role = None
+                    break
+
+                else:
+                    print("\nInvalid option.")
+
+            except ValueError:
+                print("\nInvalid input.")
+
+    if role is None or role is "customer" or role is "admin":
+        menu()
+        categories = createCategories()
+
+        for data in categories:
+            print(data.getCode(), data.getDescription(), "\n")
+
+        choice = getChoice(categories)
+        chosenCat = categories[choice - 1]
+
+        products = createProduct(chosenCat)
+
+        print("\nViewing:", chosenCat.title, "\n")
+        for prod in products:
+            print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
+
+        #Ticket Purchasing section
+            
+        role = ticketPurchase(products, role, username)
+
         try:
-            user_choice = int(input("Choose an option: "))
+            again = input("Would you like to return to the main menu? (y/n) ")
 
-            if user_choice == 1: # view ticket purchases
-                viewTickets(username, role)
-                continue
-
-            elif user_choice == 2: # purchase ticket
-                pass
-
-            elif user_choice == 3: # log out
-                print("\nLogged out successfully.\n")
-                role = None
-                continue
-
+            if again == 'n':
+                print("\nGoodbye!")
+                break
             else:
-                print("\nInvalid option.")
-                continue
-
+                print("\nReturning to the main menu..")
         except ValueError:
-            print("\nInvalid input.")
-            continue
-
-    if role == "admin":
-        adminMenu()
-        try:
-            user_choice = int(input("Choose an option: "))
-
-            if user_choice == 1: # purchase ticket
-                continue
-
-            elif user_choice == 2: # add product
-                continue
-
-            elif user_choice == 3: # view ticket purchases
-                viewTickets(username, role)
-                continue
-
-            elif user_choice == 4: # clear purchases
-                clearPurchases()
-                continue
-
-            elif user_choice == 5: # log out
-                print("\nLogged out successfully.\n")
-                role = None
-                continue
-
-            else:
-                print("\nInvalid option.")
-                continue
-
-        except ValueError:
-            print("\nInvalid input.")
-            continue
-
-
-    menu()
-    categories = createCategories()
-
-    for data in categories:
-        print(data.getCode(), data.getDescription(), "\n")
-
-    choice = getChoice(categories)
-    chosenCat = categories[choice - 1]
-
-    products = createProduct(chosenCat)
-
-    print("\nViewing:", chosenCat.title, "\n")
-    for prod in products:
-        print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
-
-    #Ticket Purchasing section
-        
-    role = ticketPurchase(products, role, username)
-
-    try:
-        again = input("Would you like to return to the main menu? (y/n) ")
-
-        if again == 'n':
-            print("\nGoodbye!")
-            break
-        else:
-            print("\nReturning to the main menu..")
-    except ValueError:
-            print(f"\nInvalid input.")
+                print(f"\nInvalid input.")
 
 
