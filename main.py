@@ -1,4 +1,5 @@
 import csv
+import sys
 
 class Category:
     def __init__(self, code, title, description):
@@ -33,15 +34,20 @@ accounts = [
 
 def login():
     print("""
-========Mobile Tickets========
+======== MOBILE TICKETS ========
 1. Log in
 2. Continue as guest
+3. Exit
 """)
 
 
     while True:
         try:
             choice = int(input("Choose an option: "))
+
+            if choice == 3:
+                print("\nGoodbye!")
+                sys.exit()
 
             if choice == 2:
                 print("\nContinuing as guest...")
@@ -171,6 +177,9 @@ def ticketPurchase(products, role, username):
                              chosenProd.code,
                              chosenProd.title,
                              f"{chosenProd.price_pounds():.2f}"])
+
+        return role, username
+
     
     else:
         print("\nPurchase Cancelled \n")
@@ -207,67 +216,68 @@ def clearPurchases():
             writer = csv.writer(file)
 
 #main
+role = "customer"
+username = "user1"
 
 while True:
-    logged_out = False
-    role, username = login()
-
-    while role in ("customer", "admin"):
     
-        if role == "customer":
-            userMenu()
-            try:
-                user_choice = int(input("Choose an option: "))
 
-                if user_choice == 1: # view ticket purchases
-                    viewTickets(username, role)
 
-                elif user_choice == 2: # purchase ticket
-                    break
 
-                elif user_choice == 3: # log out
-                    print("\nLogged out successfully.\n")
-                    role = None
-                    logged_out = True
-                    break
+    if role is None:
+        role, username = login()
+    
+    while role == "customer":
+        userMenu()
+        try:
+            user_choice = int(input("Choose an option: "))
 
-                else:
-                    print("\nInvalid option.")
+            if user_choice == 1: # view ticket purchases
+                viewTickets(username, role)
 
-            except ValueError:
-                print("\nInvalid input.")
+            elif user_choice == 2: # purchase ticket
+                break
 
-        elif role == "admin":
-            adminMenu()
-            try:
-                user_choice = int(input("Choose an option: "))
+            elif user_choice == 3: # log out
+                print("\nLogged out successfully.\n")
+                role = None
+                logged_out = True
+                break
 
-                if user_choice == 1: # purchase ticket
-                    break
+            else:
+                print("\nInvalid option.")
 
-                elif user_choice == 2: # add product
-                    pass
+        except ValueError:
+            print("\nInvalid input.")
 
-                elif user_choice == 3: # view ticket purchases
-                    viewTickets(username, role)
+    while role == "admin":
+        adminMenu()
+        try:
+            user_choice = int(input("Choose an option: "))
 
-                elif user_choice == 4: # clear purchases
-                    clearPurchases()
+            if user_choice == 1: # purchase ticket
+                break
 
-                elif user_choice == 5: # log out
-                    print("\nLogged out successfully.\n")
-                    role = None
-                    logged_out = True
-                    break
+            elif user_choice == 2: # add product
+                pass
 
-                else:
-                    print("\nInvalid option.")
+            elif user_choice == 3: # view ticket purchases
+                viewTickets(username, role)
 
-            except ValueError:
-                print("\nInvalid input.")
+            elif user_choice == 4: # clear purchases
+                clearPurchases()
 
-    if logged_out:
-        continue
+            elif user_choice == 5: # log out
+                print("\nLogged out successfully.\n")
+                role = None
+                logged_out = True
+                break
+
+            else:
+                print("\nInvalid option.")
+
+        except ValueError:
+            print("\nInvalid input.")
 
     menu()
     categories = createCategories()
@@ -286,7 +296,7 @@ while True:
 
     #Ticket Purchasing section
         
-    role = ticketPurchase(products, role, username)
+    role, username = ticketPurchase(products, role, username)
 
     try:
         again = input("Would you like to return to the main menu? (y/n) ")
