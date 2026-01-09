@@ -180,9 +180,10 @@ def ticketPurchase(products, role, username):
 
         return role, username
 
-    
     else:
         print("\nPurchase Cancelled \n")
+
+        return role, username
           
 def viewTickets(username, role):
     try:
@@ -216,14 +217,12 @@ def clearPurchases():
             writer = csv.writer(file)
 
 #main
-role = "customer"
-username = "user1"
+role = None
+username = None
+logged_out = False
 
 while True:
     
-
-
-
     if role is None:
         role, username = login()
     
@@ -278,6 +277,10 @@ while True:
 
         except ValueError:
             print("\nInvalid input.")
+
+    if logged_out:
+        logged_out = False
+        continue
 
     menu()
     categories = createCategories()
