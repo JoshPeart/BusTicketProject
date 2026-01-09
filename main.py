@@ -188,10 +188,10 @@ def viewTickets(username, role):
                 if role == "admin":
                     print(f"User: {row[0]} | {row[2]} - £{row[3]}")
                     found = True
-
-                elif role == "customer":
-                    print(f"{row[2]} - £{row[3]}")
-                    found = True
+                    
+                elif role == "customer" and row[0] == username:
+                        print(f"{row[2]} - £{row[3]}")
+                        found = True
 
             if not found:
                 print("\nNo tickets found.")
@@ -209,9 +209,11 @@ def clearPurchases():
 #main
 
 while True:
+    logged_out = False
     role, username = login()
 
-    while True:
+    while role in ("customer", "admin"):
+    
         if role == "customer":
             userMenu()
             try:
@@ -221,11 +223,12 @@ while True:
                     viewTickets(username, role)
 
                 elif user_choice == 2: # purchase ticket
-                    pass
+                    break
 
                 elif user_choice == 3: # log out
                     print("\nLogged out successfully.\n")
                     role = None
+                    logged_out = True
                     break
 
                 else:
@@ -240,7 +243,7 @@ while True:
                 user_choice = int(input("Choose an option: "))
 
                 if user_choice == 1: # purchase ticket
-                    pass
+                    break
 
                 elif user_choice == 2: # add product
                     pass
@@ -254,6 +257,7 @@ while True:
                 elif user_choice == 5: # log out
                     print("\nLogged out successfully.\n")
                     role = None
+                    logged_out = True
                     break
 
                 else:
@@ -262,35 +266,37 @@ while True:
             except ValueError:
                 print("\nInvalid input.")
 
-    if role is None or role is "customer" or role is "admin":
-        menu()
-        categories = createCategories()
+    if logged_out:
+        continue
 
-        for data in categories:
-            print(data.getCode(), data.getDescription(), "\n")
+    menu()
+    categories = createCategories()
 
-        choice = getChoice(categories)
-        chosenCat = categories[choice - 1]
+    for data in categories:
+        print(data.getCode(), data.getDescription(), "\n")
 
-        products = createProduct(chosenCat)
+    choice = getChoice(categories)
+    chosenCat = categories[choice - 1]
 
-        print("\nViewing:", chosenCat.title, "\n")
-        for prod in products:
-            print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
+    products = createProduct(chosenCat)
 
-        #Ticket Purchasing section
-            
-        role = ticketPurchase(products, role, username)
+    print("\nViewing:", chosenCat.title, "\n")
+    for prod in products:
+        print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
 
-        try:
-            again = input("Would you like to return to the main menu? (y/n) ")
+    #Ticket Purchasing section
+        
+    role = ticketPurchase(products, role, username)
 
-            if again == 'n':
-                print("\nGoodbye!")
-                break
-            else:
-                print("\nReturning to the main menu..")
-        except ValueError:
-                print(f"\nInvalid input.")
+    try:
+        again = input("Would you like to return to the main menu? (y/n) ")
+
+        if again == 'n':
+            print("\nGoodbye!")
+            break
+        else:
+            print("\nReturning to the main menu..")
+    except ValueError:
+            print(f"\nInvalid input.")
 
 
