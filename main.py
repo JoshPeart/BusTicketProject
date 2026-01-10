@@ -90,7 +90,7 @@ def adminMenu():
     
 def menu():
     instructions = """
-========MAIN MENU========
+======== MAIN MENU ========
 Welcome to the NCTX Bus Ticket Application
 Pick one of the following options
 Enter the Option Number
@@ -166,7 +166,7 @@ def ticketPurchase(products, role, username):
     confirm = input("\nConfirm your purchase: (y/n) ")
 
     if confirm == 'y':
-        print("\n========TRANSACTION SUCCESSFUL========")
+        print("\n======== TRANSACTION SUCCESSFUL ========")
         print(f"Ticket: {chosenProd.title}")
         print(f"Price Paid: £{chosenProd.price_pounds():.2f}")
         print("Thank you for your purchase!\n")
@@ -189,7 +189,7 @@ def viewTickets(username, role):
     try:
         with open("purchases.csv", "r") as file:
             reader = csv.reader(file)
-            print("\n===== PURCHASED TICKETS =====")
+            print("\n======== PURCHASED TICKETS ========")
 
             found = False
             
@@ -215,6 +215,62 @@ def clearPurchases():
     
     with open("purchases.csv", "w", newline="") as file:
             writer = csv.writer(file)
+
+def addProduct():
+
+    print("\n======== ADD PRODUCT ========")
+
+
+    categories = createCategories()
+
+    print("\nSelect a category:\n")
+    for cat in categories:
+        print(f"{cat.code}. {cat.title}\n")
+
+    print(f"{len(categories) + 1}. Add NEW category")
+
+    while True:
+        try:
+            choice = int(input("\nEnter option number: "))
+            if 1 <= choice <= len(categories) + 1:
+                break
+            else:
+                print(f"\nInvalid input. Please enter a number from 1 - {len(categories) + 1}.")
+        except ValueError:
+            print(f"\nInvalid input. Please enter a number from 1 - {len(categories) + 1}")
+
+    if choice <= len(categories):
+        chosen_category = categories[choice - 1]
+        category_title = chosen_category.title
+        category_description = chosen_category.description
+
+    else:
+        category_title = input("\nEnter NEW category title: ")
+        category_description = input("Enter category description: ")
+
+    topup_title = input("\nEnter topup title: ")
+
+    while True:
+        try:
+            topup_price = int(input("Enter price in pence: "))
+            if topup_price < 0:
+                print("Price must be positive.")
+                continue
+            break
+        except ValueError:
+            print("Enter a valid number.")
+
+    passenger_class = input("Enter passenger class name: ")
+
+    print(category_title,
+            category_description,
+            topup_title,
+            topup_price,
+            passenger_class)
+
+    print("\nProduct added successfully!\n")
+        
+    
 
 #main
 role = None
@@ -258,7 +314,7 @@ while True:
                 break
 
             elif user_choice == 2: # add product
-                pass
+                addProduct()
 
             elif user_choice == 3: # view ticket purchases
                 viewTickets(username, role)
