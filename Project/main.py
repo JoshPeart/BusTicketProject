@@ -1,104 +1,40 @@
+# Main program file
+# Here is where everything is run
+# The menus and 
+
 import csv
-from auth import login, getChoice
-from csv_handler import createCategories, createProduct, viewTickets, clearPurchases
+from auth import login, userMenu, adminMenu, menu, getChoice
+from csv_handler import createCategories, createProduct, viewTickets, clearPurchases, ticketPurchase
 from product_manager import addProduct
 from models import Product
 
-def userMenu():
-    print("""
-======== USER MENU ========
-1. View purchased tickets
-2. Purchase a ticket
-3. Log out
-""")
 
-def adminMenu():
-    print("""
-======== ADMIN MENU ========
-1. Purchase a ticket (test)
-2. Add product
-3. View purchased tickets
-4. Clear purchase history
-5. Log out
-""")
-    
-def menu():
-    instructions = """
-======== MAIN MENU ========
-Welcome to the NCTX Bus Ticket Application
-Pick one of the following options
-Enter the Option Number
-"""
-
-    print(instructions)
-
-
-def ticketPurchase(products, role, username):
-    while True:
-        try:
-            buy = int(input("\nWould you like to purchase a ticket? Enter the code: "))
-            if 1 <= buy <= len(products):
-                break
-            else:
-                print(f"\nInvalid input. Please enter a number from 1 - {len(products)}.")
-        except ValueError:
-            print(f"\nInvalid input. Please enter a number from 1 - {len(products)}")
-
-    chosenProd = products[buy - 1]
-
-    print(f"\nYou have chosen: {chosenProd.title} for £{chosenProd.price_pounds():.2f}")
-
-    if role is None:
-        print("\nYou must log in to complete this purchase.")
-        role, username = login()
-
-        if role is None:
-            print("\nPurchase cancelled. Guest users cannot buy tickets.\n")
-            return role, username
-    
-    confirm = input("\nConfirm your purchase: (y/n) ")
-
-    if confirm == 'y':
-        print("\n======== TRANSACTION SUCCESSFUL ========")
-        print(f"Ticket: {chosenProd.title}")
-        print(f"Price Paid: £{chosenProd.price_pounds():.2f}")
-        print("Thank you for your purchase!\n")
-
-        with open("purchases.csv", "a", newline ="") as file:
-            writer = csv.writer(file)
-            writer.writerow([username,
-                             chosenProd.code,
-                             chosenProd.title,
-                             f"{chosenProd.price_pounds():.2f}"])
-
-        return role, username
-
-    else:
-        print("\nPurchase Cancelled \n")
-
-        return role, username
-
+# Track login state across the program
 role = None
 username = None
 logged_out = False
 
+
+# Main program loop
 while True:
-    
+
+    # Force login if no user is logged in
     if role is None:
         role, username = login()
-    
+
+    # Customer loop and menu 
     while role == "customer":
         userMenu()
         try:
             user_choice = int(input("Choose an option: "))
 
-            if user_choice == 1: # view ticket purchases
+            if user_choice == 1: # View ticket purchases
                 viewTickets(username, role)
 
-            elif user_choice == 2: # purchase ticket
+            elif user_choice == 2: # Purchase ticket
                 break
 
-            elif user_choice == 3: # log out
+            elif user_choice == 3: # Log out
                 print("\nLogged out successfully.\n")
                 role = None
                 logged_out = True
@@ -110,27 +46,28 @@ while True:
         except ValueError:
             print("\nInvalid input.")
 
+    # Admin loop and menu
     while role == "admin":
         adminMenu()
         try:
             user_choice = int(input("Choose an option: "))
 
-            if user_choice == 1: # purchase ticket
+            if user_choice == 1: # Purchase ticket
                 break
 
-            elif user_choice == 2: # add product
+            elif user_choice == 2: # Add product
                 addProduct()
 
-            elif user_choice == 3: # view ticket purchases
+            elif user_choice == 3: # View ticket purchases
                 viewTickets(username, role)
 
-            elif user_choice == 4: # clear purchases
+            elif user_choice == 4: # Clear purchases
                 clearPurchases()
 
-            elif user_choice == 5: # log out
+            elif user_choice == 5: # Log out
                 print("\nLogged out successfully.\n")
                 role = None
-                logged_out = True
+                logged_oukt = True
                 break
 
             else:
@@ -139,14 +76,16 @@ while True:
         except ValueError:
             print("\nInvalid input.")
 
+    # Restart the main loop if the user is logged out
     if logged_out:
         logged_out = False
         continue
 
+    # Main display of the avaliable categories and products
     menu()
     categories, subcategories = createCategories()
 
-    for data in categories:
+    for data in categories: 
         print(data.getCode(), data.getDescription(), "\n")
 
     choice = getChoice(categories)
@@ -158,8 +97,7 @@ while True:
     for prod in products:
         print(prod.code, prod.title, f"- £{prod.price_pounds():.2f}", "\n")
 
-    #Ticket Purchasing section
-        
+    # Ticket Purchasing section
     role, username = ticketPurchase(products, role, username)
 
     try:

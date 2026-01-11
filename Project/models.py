@@ -1,3 +1,5 @@
+# Holds all of the classes
+
 class Category:
     def __init__(self, code, category_id, title, description, entitlement_type):
         self.code = code
@@ -22,8 +24,9 @@ class Category:
         return self.entitlement_type
 
 class Product:
-    def __init__(self, code, title, price_pence):
+    def __init__(self, code, topup_id, title, price_pence):
         self.code = code
+        self.topup_id = topup_id
         self.title = title
         self.price_pence = int(price_pence)
 
