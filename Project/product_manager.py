@@ -75,16 +75,16 @@ def addProduct():
 
     # Confirmation
     print("\n======== CONFIRM NEW PRODUCT ========")
-    print(category_id)
-    print(category_title)
-    print(category_description)
-    print(topup_id)
-    print(topup_title)
-    print(topup_description)
-    print(topup_price)
-    print(entitlement_type)
-    print(passenger_class)
-    print(quantity)
+    print("Category ID: ", category_id)
+    print("Category title: ", category_title)
+    print("Category description: ", category_description)
+    print("Unique product code: ", topup_id)
+    print("Ticket Title: ", topup_title)
+    print("Ticket Description: ", topup_description)
+    print("Price (pence): ", topup_price)
+    print("Ticket Entitlement: ", entitlement_type)
+    print("Passenger class: ", passenger_class)
+    print("Holder Quantity: ", quantity)
 
     confirm = input("\nSave this product to CSV? (y/n): ")
 

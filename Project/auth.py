@@ -53,10 +53,10 @@ def login():
                 print("\nInvalid username or password. Try again.\n")
 
             else:
-                print("\nPlease enter 1 or 2.")
+                print("\nInvalid input. Please enter a number from 1 - 3.\n")
 
         except ValueError:
-            print("\nInvalid input. Please enter a number.")
+            print("\nInvalid input. Please enter a number.\n")
 
 def userMenu():
 

@@ -40,10 +40,10 @@ while True:
                 break
 
             else:
-                print("\nInvalid option.")
+                print("\nInvalid input. Please enter a number from 1 - 3")
 
         except ValueError:
-            print("\nInvalid input.")
+            print("\nInvalid input. Please enter a number from 1 - 3")
 
     # Admin loop and menu
     while role == "admin":
@@ -66,14 +66,14 @@ while True:
             elif user_choice == 5: # Log out
                 print("\nLogged out successfully.\n")
                 role = None
-                logged_oukt = True
+                logged_out = True
                 break
 
             else:
-                print("\nInvalid option.")
+                print("\nInvalid input. Please enter a number from 1 - 5")
 
         except ValueError:
-            print("\nInvalid input.")
+            print("\nInvalid input. Please enter a number from 1 - 5")
 
     # Restart the main loop if the user is logged out
     if logged_out:
@@ -99,13 +99,12 @@ while True:
     # Ticket Purchasing section
     role, username = ticketPurchase(products, role, username)
 
-    try:
-        again = input("Would you like to return to the main menu? (y/n) ")
 
-        if again == 'n':
-            print("\nGoodbye!")
-            break
-        else:
-            print("\nReturning to the main menu..")
-    except ValueError:
-            print(f"\nInvalid input.")
+    again = input("Would you like to return to the main menu? (y/n) ")
+
+    if again != 'y':
+        print("\nGoodbye!")
+        break
+    else:
+        print("\nReturning to the main menu..")
+

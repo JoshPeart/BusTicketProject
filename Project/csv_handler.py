@@ -6,6 +6,7 @@
 import csv
 import uuid
 from models import Category, Product
+from auth import login
 
 def createCategories():
 
@@ -126,8 +127,14 @@ def ticketPurchase(products, role, username):
         if role is None:
             print("\nPurchase cancelled. Guest users cannot buy tickets.\n")
             return role, username
-    
-    confirm = input("\nConfirm your purchase: (y/n) ")
+
+    while True:
+        confirm = input("\nConfirm your purchase: (y/n) ")
+        if confirm in ('y', 'n'):
+            break
+        else:
+            print("\nInvalid input. Please enter 'y' or 'n'.")
+        
 
     if confirm == 'y':
         print("\n======== TRANSACTION SUCCESSFUL ========")
