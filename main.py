@@ -117,8 +117,8 @@ def createCategories():
         csvFile = csv.DictReader(file)
         for lines in csvFile:
 
-            name = lines["topup_passenger_class_name"]
-            if name not in subcategories:
+            name = lines.get("topup_passenger_class_name")
+            if name:
                 subcategories.add(name)
                 
             if lines["category_title"] not in categoryList:
@@ -236,6 +236,13 @@ def viewTickets(username, role):
 
 def clearPurchases():
     
+    print("\nWARNING: This will permanently delete ALL purchase data.")
+    confirm = input('\nType "DELETE ALL" to confirm: ')
+
+    if confirm != "DELETE ALL":
+        print("Operation cancelled.")
+        return
+    
     with open("purchases.csv", "w", newline="") as file:
             writer = csv.writer(file)
 
@@ -296,7 +303,7 @@ def addProduct():
     else:
         quantity = 1
 
-    print("\n=== CONFIRM NEW PRODUCT ===")
+    print("\n======== CONFIRM NEW PRODUCT ========")
     print(category_id)
     print(category_title)
     print(category_description)
