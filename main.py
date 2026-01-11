@@ -240,7 +240,7 @@ def clearPurchases():
     confirm = input('\nType "DELETE ALL" to confirm: ')
 
     if confirm != "DELETE ALL":
-        print("Operation cancelled.")
+        print("\nOperation cancelled.")
         return
     
     with open("purchases.csv", "w", newline="") as file:
