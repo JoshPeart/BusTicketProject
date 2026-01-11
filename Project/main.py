@@ -1,6 +1,5 @@
 # Main program file
 # Here is where everything is run
-# The menus and 
 
 import csv
 from auth import login, userMenu, adminMenu, menu, getChoice
