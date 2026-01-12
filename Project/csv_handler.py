@@ -1,6 +1,7 @@
-# Here I have the functions that read or write to a CSV file
+# Here I have the functions that read, write or append to a CSV file
 # Creating the categories and products
 # Viewing the tickets
+# Purchasing the tickets
 # Wiping the purchase history
 
 import csv
@@ -11,7 +12,7 @@ from auth import login
 def createCategories():
 
     # Reads the mobile products CSV and creates Category objects
-    # Also collects any subcategories and returns them in a sorted list
+    # Also collects any subcategories (passenger class names) and returns them in a sorted list
     
     categoryList = []
     categoryObjectList = []
