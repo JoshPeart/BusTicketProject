@@ -5,7 +5,7 @@
 
 import csv
 import uuid
-from models import Category, Product
+from classes import Category, Product
 from auth import login
 
 def createCategories():

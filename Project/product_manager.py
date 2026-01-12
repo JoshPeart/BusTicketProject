@@ -4,7 +4,7 @@
 import csv
 import uuid
 from csv_handler import createCategories
-from models import Category
+from classes import Category
 from auth import getChoice
 
 def addProduct():

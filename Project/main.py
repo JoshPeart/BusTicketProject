@@ -5,7 +5,7 @@ import csv
 from auth import login, userMenu, adminMenu, menu, getChoice
 from csv_handler import createCategories, createProduct, viewTickets, clearPurchases, ticketPurchase
 from product_manager import addProduct
-from models import Product
+from classes import Product
 
 
 # Track login state across the program
